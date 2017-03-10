@@ -28,11 +28,19 @@ module Chartjs
 
     def chart(type, data, options)
       @chart_id ||= -1
-      element_id = options.delete(:id)     || "chart-#{@chart_id += 1}"
-      css_class  = options.delete(:class)  || 'chart'
-      width      = options.delete(:width)  || '400'
-      height     = options.delete(:height) || '400'
 
+      default_options = {
+        id: "chart-#{@chart_id += 1}",
+        class: 'chart',
+        width: '400',
+        height:'400'
+      }
+
+      element_id = options[:id]     || default_options[:id]
+      css_class  = options[:class]  || default_options[:class]
+      width      = options[:width]  || default_options[:width]
+      height     = options[:height] || default_options[:height]
+      default_options.keys.each { |k| options.delete k }
       canvas = content_tag :canvas, '', id: element_id, class: css_class, width: width, height: height
 
       script = javascript_tag do
